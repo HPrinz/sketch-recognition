@@ -104,11 +104,11 @@ class SketchSvm:
         return descr
 
     def draw_heatmap(self, model, params):
-        fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel":"linear"})
-        fig.get_figure().savefig("results/" + self.timestamp + "linear.pdf")
-
-        fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel": "rbf"})
+        fig = plot.grid_search(model.grid_scores_, change=params)
         fig.get_figure().savefig("results/" + self.timestamp + "rbf.pdf")
+
+        # fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel": "rbf"})
+        # fig.get_figure().savefig("results/" + self.timestamp + "rbf.pdf")
 
     def train_model(self, path, c_range, gamma_range, kernel="linear"):
         self.load_images(path)
