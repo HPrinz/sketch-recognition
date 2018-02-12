@@ -91,14 +91,14 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 
 ### TU-Berlin Sketch Dataset
 
-| Nr.   | Type | keypoints       | C                |    gamme            | Kernel  | score | best  |
+| Nr.   | Type | keypoints       | C                |    gamma            | Kernel  | score | best  |
 |-------|------|-----------------|:----------------:|:-------------------:|:-------:|:-----:|:-----:|
-| 1     | SVM   | 150x150x50     | 1, 10, 100, 1000 | .001, .01, .1       | linear  | 0.63  | same   |
-| 2     | SVM   | 150x150x**30** | 1, 10, 100, 1000 | .001, .01, .1       | linear  | 0.67  | same   |
+| 1     | SVM   | 150x150x50     | 1, 10, 100, 1000 | -                   | linear  | 0.63  | same   |
+| 2     | SVM   | 150x150x**30** | 1, 10, 100, 1000 | -                   | linear  | 0.67  | same   |
 | **3** | SVM   | 150x150x30     | 10, 100, 1000    | .00001, .0001, .001 | **rbf** | 0.69  | gamma : 0.0001, C: 100   |
 
 **Best Result : #3**
-![Best Result SVM](md-images/18-02-12_20:23:19rbf.pdf)
+![Best Result SVM](md-images/3.png)
 
 
 ## Google QuickDraw
