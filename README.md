@@ -2,7 +2,7 @@
 
 A SVM based machine learning program for human sketch recognition based on [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/).
 
-![Ant](http://gph.is/2ElN30y)
+![Ant](https://media.giphy.com/media/xThtaiAAht03JkRjFe/giphy.gif)
 ![Penguin 2](/md-images/12002.png)
 ![Penguin 3](/md-images/12003.png)
 ![Penguin 4](/md-images/12004.png)
