@@ -10,7 +10,9 @@ from sklearn.model_selection import GridSearchCV
 import pickle
 from MidpointNormalize import *
 from PIL import Image
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
+from sklearn_evaluation import plot
+from sklearn.preprocessing import StandardScaler
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -20,7 +22,7 @@ class SketchSvm:
 
     def __init__(self):
 
-        self.keypoints = self.create_keypoints(150, 150, 50)
+        self.keypoints = self.create_keypoints(150, 150, 30)
         print("created " + str(len(self.keypoints)) + " keypoints")
 
         # histogram orientations: 4 neighbors horizontal * 4 neighbors vertical * 8 directions
@@ -37,6 +39,8 @@ class SketchSvm:
 
         self.categories_and_images = []
         self.num_train_images = 0
+
+        self.scaler = StandardScaler()
 
     def load_images(self, train_path):
         # read categories by folders
@@ -99,36 +103,16 @@ class SketchSvm:
         keyp, descr = self.sift.compute(image, self.keypoints)
         return descr
 
-    def draw_heatmap(self, model, c_range, gamma_range):
-        # Draw heatmap of the validation accuracy as a function of gamma and C
-        #
-        # The score are encoded as colors with the hot colormap which varies from dark
-        # red to bright yellow. As the most interesting scores are all located in the
-        # 0.92 to 0.97 range we use a custom normalizer to set the mid-point to 0.92 so
-        # as to make it easier to visualize the small variations of score values in the
-        # interesting range while not brutally collapsing all the low score values to
-        # the same color.
+    def draw_heatmap(self, model, params):
+        fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel":"linear"})
+        fig.get_figure().savefig("results/" + self.timestamp + "linear.pdf")
 
-        scores = model.cv_results_['mean_test_score'].reshape(len(c_range), len(gamma_range))
+        fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel": "rbf"})
+        fig.get_figure().savefig("results/" + self.timestamp + "rbf.pdf")
 
-        pprint.pprint(scores)
-
-        plt.figure(figsize=(8, 6))
-        plt.subplots_adjust(left=.2, right=0.95, bottom=0.15, top=0.95)
-        plt.imshow(scores, interpolation='nearest', cmap=plt.cm.hot,
-                   norm=MidpointNormalize(vmin=0.2, midpoint=0.92))
-        plt.xlabel('gamma')
-        plt.ylabel('C')
-        plt.colorbar()
-        plt.xticks(np.arange(len(gamma_range)), gamma_range, rotation=45)
-        plt.yticks(np.arange(len(c_range)), c_range)
-        plt.title('Validation accuracy')
-        # plt.show()
-        plt.savefig("results/" + self.timestamp + ".pdf")
-
-    def train_model(self, path, c_range, gamma_range, kernel="rbf"):
+    def train_model(self, path, c_range, gamma_range, kernel="linear"):
         self.load_images(path)
-        print("loaded images")
+        print("loaded %d images" % self.num_train_images)
         return self.train(False, c_range, gamma_range, kernel)
 
     def train_model_google(self, path, c_range, gamma_range, kernel="linear", num=200):
@@ -177,37 +161,34 @@ class SketchSvm:
 
                 index_img = index_img + 1
             index_cat = index_cat + 1
-
-        # scaler = StandardScaler()
-        # x_train = scaler.fit_transform(x_train)
+        x_train = self.scaler.fit_transform(x_train)
         return x_train, y_train
 
     def train(self, google, c_range, gamma_range, kernel, save=True):
         x_train, y_train = self.get_training_data(google)
 
+        # parameters = {'C': c_range, "gamma": gamma_range, 'kernel': ['linear', 'rbf']}
         parameters = {'C': c_range, "gamma": gamma_range}
 
         # train a SVM classifier, specifically a GridSearchCV in our case
-        clf = GridSearchCV(svm.SVC(kernel=kernel), parameters)
+        clf = GridSearchCV(svm.SVC(kernel), parameters)
         clf.fit(x_train, y_train)
 
         # save model
         if save:
             self.save_model(google, clf)
 
-        self.draw_heatmap(clf, c_range, gamma_range)
+        self.draw_heatmap(clf, ('C', 'gamma'))
 
         return clf
 
     def test_image(self, image, model):
         des = self.create_sift_descriptors_for_image(image)
 
-        # pprint.pprint(des)
-
         test_descriptor = np.zeros((1, self.descriptor_length))
         test_descriptor[0] = des.flatten()
 
-        # test_descriptor = scaler.fit_transform(test_descriptor)
+        test_descriptor = self.scaler.fit_transform(test_descriptor)
 
         label = model.best_estimator_.predict(test_descriptor)
 

@@ -47,15 +47,16 @@ If you want to include **other or more categories**, follow these steps:
 Google provides a massive amount of sketches through the QuickDraw Dataset which can be used to train the SVM as well:
 
 - download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/img-quickdraw`
-- rename files to `<category>.npy``
+- rename files to `<category>.npy`
 
 ```bash
 python train_sketchmodel_quickdraw.py
 ```
+The first 10 sketches will be automatically used for testing, while the next 240 will serve as training input
 
 ## Train CNN
 
-### CNN Architecture
+### CNN (Convolution Neural Network) Architecture
 
 The Architecture is implemented as described in [Sketch-a-Net that Beats Humans (Yu et al. 2015)](https://arxiv.org/pdf/1501.07873.pdf)
 
@@ -77,6 +78,10 @@ The Architecture is implemented as described in [Sketch-a-Net that Beats Humans 
 | 8 | Conv (ReLU) |     1x1     |     250    |    1   |    0    |   1x1   |
 
 
+### TU-Berlin Sketch Dataset
+
+### Google QuickDraw Dataset
+
 ## Using Pre-Trained Models
 
 Trained models are saved in the `models/` folder for later use.
@@ -84,6 +89,15 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 
 ## Results
 
+## TU-Berlin Sketch Dataset
+
+| Type | keypoints    | C                |    gamme       | Kernel | score | best  |
+|------|--------------|:----------------:|:--------------:|:------:|:-----:|:-----:|
+| SVM   | 150x150x50  | 1, 10, 100, 1000 | .001, .01, .1  | linear | 0.63  | same   |
+| SVM   | 150x150x**30**  | 1, 10, 100, 1000 | .001, .01, .1  | linear | 0.67  | same   |
+
+
+## Google QuickDraw
 
 
 ## Credits and Thanks
@@ -91,3 +105,5 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 The implementation of the SVM is based on the exercise code providede by [Prof. Dr.-Ing. Kristian Hildebrand](http://hildebrand.beuth-hochschule.de/#/)
 
 The SVM approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
+
+The CNN approach is described in [Sketch-a-Net that Beats Humans (Yu et al. 2015)](https://arxiv.org/pdf/1501.07873.pdf)

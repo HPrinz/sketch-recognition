@@ -1,4 +1,7 @@
 from SketchSvm import SketchSvm
+import time
+
+start_time = time.time()
 
 svm = SketchSvm()
 
@@ -6,10 +9,12 @@ svm = SketchSvm()
 
 googletestpath = './img-quickdraw/*.npy'
 
-c_range = [1, 10, 100, 1000]
-gamma_range = [.001, .01]
-model = svm.train_model("./img/**", c_range, gamma_range, kernel="linear")
+c_range = [10, 100, 1000]
+gamma_range = [0.00001, 0.0001, 0.001]
+model = svm.train_model("./img/**", c_range, gamma_range, kernel="rbf")
 
 print("The best parameters are %s with a score of %0.2f" % (model.best_params_, model.best_score_))
 
 svm.test_model(model, './test/*/*.png')
+
+print("--- %0.2f minutes ---" % ((time.time() - start_time) / 60))
