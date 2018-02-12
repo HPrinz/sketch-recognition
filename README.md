@@ -89,4 +89,5 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 ## Credits and Thanks
 
 The implementation of the SVM is based on the exercise code providede by [Prof. Dr.-Ing. Kristian Hildebrand](http://hildebrand.beuth-hochschule.de/#/)
+
 The SVM approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)

@@ -20,7 +20,7 @@ class SketchSvm:
 
     def __init__(self):
 
-        self.keypoints = self.create_keypoints(150, 150, 30)
+        self.keypoints = self.create_keypoints(150, 150, 50)
         print("created " + str(len(self.keypoints)) + " keypoints")
 
         # histogram orientations: 4 neighbors horizontal * 4 neighbors vertical * 8 directions
@@ -185,18 +185,17 @@ class SketchSvm:
     def train(self, google, c_range, gamma_range, kernel, save=True):
         x_train, y_train = self.get_training_data(google)
 
+        parameters = {'C': c_range, "gamma": gamma_range}
+
         # train a SVM classifier, specifically a GridSearchCV in our case
-        clf = GridSearchCV(svm.SVC(), param_grid=[
-            {'C': c_range, 'kernel': ['linear', 'rbf']}
-        ])
+        clf = GridSearchCV(svm.SVC(kernel=kernel), parameters)
         clf.fit(x_train, y_train)
 
         # save model
         if save:
             self.save_model(google, clf)
 
-        # gamma_range
-        self.draw_heatmap(clf, c_range, ['linear', 'rbf'])
+        self.draw_heatmap(clf, c_range, gamma_range)
 
         return clf
 
