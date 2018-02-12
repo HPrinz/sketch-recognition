@@ -3,12 +3,16 @@ import argparse
 
 # https://docs.python.org/2/howto/argparse.html
 parser = argparse.ArgumentParser()
-parser.add_argument('-m', '--model', help='pre-trained model file to use', reuired=True)
+parser.add_argument('-m', '--model', help='pre-trained model file to use', required=True)
 
 args = parser.parse_args()
 model_file = args.model
 
 svm = SketchSvm()
+
+# needed for the scaler to find the right params
+svm.load_images("./img/**")
+svm.get_training_data(False)
 
 model = svm.load_model(model_file)
 

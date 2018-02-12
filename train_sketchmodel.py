@@ -7,8 +7,6 @@ svm = SketchSvm()
 
 # model = svm.load_model("18-02-08_17:42:45")
 
-googletestpath = './img-quickdraw/*.npy'
-
 c_range = [10, 100, 1000]
 gamma_range = [0.00001, 0.0001, 0.001]
 model = svm.train_model("./img/**", c_range, gamma_range, kernel="rbf")

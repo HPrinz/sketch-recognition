@@ -188,7 +188,7 @@ class SketchSvm:
         test_descriptor = np.zeros((1, self.descriptor_length))
         test_descriptor[0] = des.flatten()
 
-        test_descriptor = self.scaler.fit_transform(test_descriptor)
+        test_descriptor = self.scaler.transform(test_descriptor)
 
         label = model.best_estimator_.predict(test_descriptor)
 
