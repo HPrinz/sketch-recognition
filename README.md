@@ -4,6 +4,13 @@ A SVM based machine learning program for human sketch recognition based on [How 
 
 <span> <img src="https://media.giphy.com/media/xThtaiAAht03JkRjFe/giphy.gif" width="160"> <img src="https://media.giphy.com/media/26DN1nteDhIcwwGOY/giphy.gif" width="160">   <img src="https://media.giphy.com/media/l1KcQRJkG8JGphV0k/giphy.gif" width="160"> <img src="https://media.giphy.com/media/xThta1euv6mW2uBFmg/giphy.gif" width="160"> <img src="https://media.giphy.com/media/xThtaoqt6cwyAVnUdy/giphy.gif" width="160">   </span>
 
+## TODOs
+
+- [ ] rename img to train
+- [ ] find best model
+- [ ] try CNN
+- [ ] CNN Documentation
+
 ## Installation
 
 - run `/install.sh`
@@ -13,29 +20,64 @@ A SVM based machine learning program for human sketch recognition based on [How 
 ```bash
 conda env create -f anaconda/environment.yml
 source activate sketch-recoginition
-python3 train_sketchmodel.py
 ```
 
-## Train more or different categories
+## Train SVM
 
-The number of categories is currently set to 40 (see folders in `/img`)in order to reduce training time. if you want to include other or more categories, follow these steps: 
+### TU-Berlin Sketch Dataset
 
-- run `load_more.sketches.sh` to download all sketches collected by [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/) into folder `/img-all
+The number of categories is currently set to 40 (see folders in `/img`)in order to reduce training time (about X minutes).
+Each category consists of 110 training sketches (located in `/img`) and 10 testing sketches (located in `/test`).
+
+```bash
+python train_sketchmodel.py
+```
+
+If you want to include **other or more categories**, follow these steps: 
+
+- run `load_all_tu_sketches.sh` to download all sketches collected by [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/) into folder `/img-all
 - delete category folders in `/img`
 - copy all categories you want to recognize into folder `/img
 - run `./resize.sh` in folder `/img` as soon as you have finished copying
 - run `./extract_testsketches.sh` in `/img` to move 10 sketches per categorey for testing
-- run `train_sketchmodel.py` to train the SVM
+- run train the SVM (see above)
 
-## Train with Google QuickDraw Dataset
+### Google QuickDraw Dataset
 
-Google collected a massive amount of sketches in their QuickDraw Dataset which can be used to train the SVM as well:
+Google provides a massive amount of sketches through the QuickDraw Dataset which can be used to train the SVM as well:
 
-- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/img/qd`
-- rename files to `<category>.npy`
-- run `train_sketchmodel_quickdraw.py` to train the SVM
+- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/img-quickdraw`
+- rename files to `<category>.npy``
 
-## Using Trained Models
+```bash
+python train_sketchmodel_quickdraw.py
+```
+
+## Train CNN
+
+### CNN Architecture
+
+The Architecture is implemented as described in [Sketch-a-Net that Beats Humans (Yu et al. 2015)](https://arxiv.org/pdf/1501.07873.pdf)
+
+|   | Input       | Filter Size | Filter Num | Stride | Padding |  Output |
+|---|-------------|:-----------:|:----------:|:------:|:-------:|:-------:|
+| 0 | Conv        |             |            |        |         | 225x225 |
+| 1 | Conv(ReLU)  |    15x15    |     64     |    3   |    0    |  71x71  |
+|   | MaxPool     |     3x3     |            |    2   |    0    |  35x35  |
+| 2 | Conv(ReLU)  |     3x3     |     128    |    1   |    0    |  31x31  |
+|   | MaxPool     |     3x3     |            |    2   |    0    |  15x15  |
+| 3 | Conv(ReLU)  |     3x3     |     256    |    1   |    1    |  15x15  |
+| 4 | Conv(ReLU)  |     3x3     |     256    |    1   |    1    |  15x15  |
+| 5 | Conv(ReLU)  |     3x3     |     256    |    1   |    1    |  15x15  |
+|   | MaxPool     |     3x3     |            |    2   |    0    |   7x7   |
+| 6 | Conv(ReLU)  |     7x7     |     512    |    1   |    0    |   1x1   |
+|   | Dropout     |             |            |        |         |   1x1   |
+| 7 | Conv(ReLU)  |     1x1     |     512    |    1   |    0    |   1x1   |
+|   | Dropout     |             |            |        |         |   1x1   |
+| 8 | Conv (ReLU) |     1x1     |     250    |    1   |    0    |   1x1   |
+
+
+## Using Pre-Trained Models
 
 Trained models are saved in the `models/` folder for later use.
 To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.sav"` (change model file accordingly)
@@ -47,4 +89,4 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 ## Credits and Thanks
 
 The implementation of the SVM is based on the exercise code providede by [Prof. Dr.-Ing. Kristian Hildebrand](http://hildebrand.beuth-hochschule.de/#/)
-The approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
+The SVM approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
