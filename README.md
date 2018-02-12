@@ -6,7 +6,8 @@ A SVM based machine learning program for human sketch recognition based on [How 
 
 ## TODOs
 
-- [ ] rename img to train
+- [x] rename img to train
+- [ ] test img to train
 - [ ] find best model
 - [ ] try CNN
 - [ ] CNN Documentation
@@ -26,33 +27,34 @@ source activate sketch-recoginition
 
 ### TU-Berlin Sketch Dataset
 
-The number of categories is currently set to 40 (see folders in `/img`)in order to reduce training time (about 15 minutes).
-Each category consists of 110 training sketches (located in `/img`) and 10 testing sketches (located in `/test`).
-
+The number of categories is currently set to 40 (see folder names in `/tu-train`) in order to reduce training time (about 15 minutes).
+Each category consists of 70 training sketches (located in `/tu-train`) and 10 testing sketches (located in `/tu-test`).
 ```bash
 python train_sketchmodel.py
 ```
 
-If you want to include **other or more categories**, follow these steps: 
+In order to **change or extend the categories**, follow these steps: 
 
-- run `load_all_tu_sketches.sh` to download all sketches collected by [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/) into folder `/img-all
-- delete category folders in `/img`
-- copy all categories you want to recognize into folder `/img
-- run `./resize.sh` in folder `/img` as soon as you have finished copying
-- run `./extract_testsketches.sh` in `/img` to move 10 sketches per categorey for testing
-- run train the SVM (see above)
+- run `load_all_tu_sketches.sh` to download all sketches collected by [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/) into folder `/img-all`
+- delete folders in `/tu-train`
+- copy all categories you want to train into `/tu-train`
+- run `./resize.sh` in folder `/tu-train` as soon as you have finished copying. 10 sketches of each category will be moved for testing
+- train the SVM (see above)
 
 ### Google QuickDraw Dataset
 
-Google provides a massive amount of sketches through the QuickDraw Dataset which can be used to train the SVM as well:
-
-- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/img-quickdraw`
-- rename files to `<category>.npy`
+Google provides a massive amount of sketches through the QuickDraw Dataset which can be used to train the SVM as well. In this repository, 14 categories are used to train the SVM. 290 sketches of each category are are used to train and 10 are used to test the SVM. This decision was made due to the lower quality and lower resolution (28x28) of the dataset.
 
 ```bash
 python train_sketchmodel_quickdraw.py
 ```
-The first 10 sketches will be automatically used for testing, while the next 240 will serve as training input
+
+In order to **change or extend the categories**, follow these steps: 
+
+- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/quickdraw-train`
+- rename files to `<category>.npy`
+- run `python reduce.py` in `/quickdraw-train` to extract and export the first 300 sketches (290 train and 10 test images). The original files in `/quickdraw-train` can be deleted afterwards
+- train the SVM (see above)
 
 ## Train CNN
 
@@ -98,11 +100,17 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 | **3** | SVM   | 150x150x30     | 10, 100, 1000    | .00001, .0001, .001 | **rbf** | 0.69  | gamma : 0.0001, C: 100   |
 
 **Best Result : #3**
-![Best Result SVM](md-images/3.png)
+![Best Result SVM](md-images/svm_tu-3.png)
 
 
 ## Google QuickDraw
 
+| Nr.   | Type | keypoints       | C                |    gamma            | Kernel  | score | best  |
+|-------|------|-----------------|:----------------:|:-------------------:|:-------:|:-----:|:-----:|
+| 1     | SVM   | 150x150x30     | 1, 10, 100, 1000 | -                   | linear  |  0.70 | gamma: 0.001, C: 10 |
+
+**Best Result : #1**
+![Best Result SVM](md-images/svm_quickdraw-1.png)
 
 ## Credits and Thanks
 

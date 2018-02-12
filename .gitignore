@@ -102,3 +102,4 @@ ENV/
 .idea
 models
 results
+quickdraw-ds/*.npy

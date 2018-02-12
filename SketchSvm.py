@@ -54,7 +54,7 @@ class SketchSvm:
             self.num_train_images = self.num_train_images + len(images_in_cat)
             self.categories_and_images.append((category_name, images_in_cat))
 
-    def load_images_google(self, train_path, num):
+    def load_images_google(self, train_path):
         self.categories = glob.glob(train_path)
         self.num_train_images = 0
 
@@ -64,8 +64,9 @@ class SketchSvm:
             images = np.load(test_filename)
 
             images_formatted = []
-            for i in range(11, num):
-                image_pxl = images[i].reshape(28, 28)
+            for image in images:
+                image_pxl = image.reshape(28, 28)
+                image_pxl = np.invert(image_pxl)
                 images_formatted.append(image_pxl)
 
             self.num_train_images = self.num_train_images + len(images_formatted)
@@ -103,9 +104,13 @@ class SketchSvm:
         keyp, descr = self.sift.compute(image, self.keypoints)
         return descr
 
-    def draw_heatmap(self, model, params):
+    def draw_heatmap(self, google, model, params):
+        if google:
+            path = "results/"
+        else:
+            path = "results-quickdraw/"
         fig = plot.grid_search(model.grid_scores_, change=params)
-        fig.get_figure().savefig("results/" + self.timestamp + "rbf.pdf")
+        fig.get_figure().savefig(path + self.timestamp + "rbf.pdf")
 
         # fig = plot.grid_search(model.grid_scores_, change=params, subset={"kernel": "rbf"})
         # fig.get_figure().savefig("results/" + self.timestamp + "rbf.pdf")
@@ -115,18 +120,9 @@ class SketchSvm:
         print("loaded %d images" % self.num_train_images)
         return self.train(False, c_range, gamma_range, kernel)
 
-    def train_model_google(self, path, c_range, gamma_range, kernel="linear", num=200):
-        '''
-
-        :param path:
-        :param c_range:
-        :param gamma_range:
-        :param kernel: linear or rbf
-        :param num:
-        :return:
-        '''
-        self.load_images_google(path, num)
-        print("loaded images")
+    def train_model_google(self, path, c_range, gamma_range, kernel="linear"):
+        self.load_images_google(path)
+        print("loaded %d images" % self.num_train_images)
         return self.train(True, c_range, gamma_range, kernel)
 
     def save_model(self, google, model):
@@ -178,7 +174,7 @@ class SketchSvm:
         if save:
             self.save_model(google, clf)
 
-        self.draw_heatmap(clf, ('C', 'gamma'))
+        self.draw_heatmap(google, clf, ('C', 'gamma'))
 
         return clf
 
@@ -213,11 +209,11 @@ class SketchSvm:
         for test_filename in test_images:
             images = np.load(test_filename)
 
-            for i in range(0, 10):
-                image_pxl = images[i].reshape(28, 28)
+            for image in images:
+                image_pxl = image.reshape(28, 28)
+                image_pxl = np.invert(image_pxl)
                 im = Image.fromarray(image_pxl)
                 im.show()
                 label = self.test_image(image_pxl, model)
                 # output the identified class
-                print("label of " + test_filename + " Nr. " + str(i) + " is predicted as \"" + self.categories[
-                    label] + "\"")
+                print("label of " + test_filename + " is predicted as \"" + self.categories[label] + "\"")
