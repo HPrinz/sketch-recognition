@@ -9,7 +9,9 @@ A SVM based machine learning program for human sketch recognition based on [How 
 - [x] rename img to train
 - [ ] test img to train
 - [ ] find best model
-- [ ] try CNN
+- [x] try CNN
+- [ ] implement paper CNN
+- [ ] CNN Quickdraw
 - [ ] CNN Documentation
 
 ## Installation
@@ -82,7 +84,13 @@ The Architecture is implemented as described in [Sketch-a-Net that Beats Humans 
 
 ### TU-Berlin Sketch Dataset
 
+In a first attempt, the 1050 sketches with 150x150 pixel vectors were passed to the Fashion-network with a poor outcome (test loss: 7.3705, test accurracy: 0.0333):
+![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_accuracy_1.png)
+
+
+
 ### Google QuickDraw Dataset
+
 
 ## Using Pre-Trained Models
 

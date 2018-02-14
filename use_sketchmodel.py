@@ -11,7 +11,7 @@ model_file = args.model
 svm = SketchSvm()
 
 # needed for the scaler to find the right params
-svm.load_images("./img/**")
+svm.load_images("./tu-train/**")
 svm.get_training_data(False)
 
 model = svm.load_model(model_file)

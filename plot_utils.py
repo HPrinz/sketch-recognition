@@ -13,7 +13,7 @@ def plot_model_history(history, timestamp):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig("results/" + timestamp + "_model_accuracy.pdf")
+    plt.savefig("results-cnn/" + timestamp + "_model_accuracy.pdf")
     #plt.show()
     # summarize history for loss
     plt.figure()
@@ -47,7 +47,7 @@ def plot_result_examples(model, X_test, y_test, img_rows, img_cols, timestamp):
         plt.imshow(X_test[correct].reshape(img_rows, img_cols), cmap='gray', interpolation='none')
         plt.title("Predicted {}, Class {}".format(predicted_classes[correct], y_test[correct]))
 
-    plt.savefig("results/" + timestamp + "_predicted_class_correct.pdf")
+    plt.savefig("results-cnn/" + timestamp + "_predicted_class_correct.pdf")
     plt.figure()
     for i, incorrect in enumerate(incorrect_indices[:9]):
         plt.subplot(3, 3, i + 1)

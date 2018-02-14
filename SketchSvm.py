@@ -16,7 +16,6 @@ from sklearn.preprocessing import StandardScaler
 
 pp = pprint.PrettyPrinter(indent=4)
 
-
 class SketchSvm:
     """Support Vector Machine for Sketch recognition"""
 

@@ -14,20 +14,20 @@ timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%y-%m-%d_%H:%
 
 sketchdata = SketchData()
 
-X_train, y_train = sketchdata.get_training_data(False, "./img/**")
-X_test, y_test = sketchdata.get_training_data(False, "./test/**")
+X_train, y_train = sketchdata.get_training_data(False, "./tu-train-small/**", False)
+X_test, y_test = sketchdata.get_training_data(False, "./tu-test-small/**", False)
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
-# X_train /= 255  # why?
-# X_test /= 255
+X_train /= 255
+X_test /= 255
 print("Training matrix shape", X_train.shape)
 print("Testing matrix shape", X_test.shape)
 
 # image size
 img_rows, img_cols = 150, 150
 
-nb_classes = 40
+nb_classes = 16
 
 # uncomment for debugging
 # show 9 grayscale images as examples of the data set
@@ -44,30 +44,25 @@ nb_classes = 40
 
 # converts a class vector (list of labels in one vector (as for SVM)
 # to binary class matrix (one-n-encoding)
-print("\nY")
-pp.pprint(y_train)
+# pp.pprint(y_train)
 Y_train = np_utils.to_categorical(y_train, nb_classes)
-pp.pprint(Y_train)
+# pp.pprint(Y_train)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
-print("\nX")
-pp.pprint(X_train)
 # we need to reshape the input data to fit keras.io input matrix format
 X_train, X_test = CNNModel.reshape_input_data(X_train, X_test)
-pp.pprint(X_train)
 
 # hyperparameter
-nb_epoch = 20
+nb_epoch = 5
 batch_size = 128
 
 model = CNNModel.load_model(nb_classes)
 
-history = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch, verbose=1,
-                    validation_data=(X_test, Y_test))
+history = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch, verbose=1, validation_data=(X_test, Y_test))
 
 score = model.evaluate(X_test, Y_test, verbose=0)
 
-pickle.dump(model, open("results-cnn/" + timestamp + '.sav', 'wb'))
+# pickle.dump(model, open("results-cnn/" + timestamp + '.sav', 'wb'))
 
 print("Test score: " + str(score[0]))
 print("Test accuracy: " + str(score[1]))

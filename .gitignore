@@ -103,3 +103,8 @@ ENV/
 models
 results
 quickdraw-ds/*.npy
+tu-train-small
+tu-test-small
+results-cnn
+models-quickdraw
+results-quickdraw
