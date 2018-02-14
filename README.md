@@ -86,14 +86,15 @@ The Architecture is implemented as described in [Sketch-a-Net that Beats Humans 
 
 In a first attempt, a reduced number of 1050 sketches (15 categories) with 150x150 pixel vectors were passed to the Fashion-network with a poor outcome (test loss: 7.3705, test accurracy: 0.0333):
 Hyperparams: Epochs: 5, Batch Size: 128
-![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_accuracy_1.png)
 
+![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_accuracy_1.png)
 
 
 ### Google QuickDraw Dataset
 
 In a first attempt, the whole set of 4046 sketches with 150x150 pixel vectors were passed to the Fashion-network with a acceptable outcome (test loss: 0.9681 - test accurracy: 0.7214):
 Hyperparams: Epochs: 5, Batch Size: 128
+
 ![](md-images/cnn_quickdraw_loss_1.png) ![](md-images/cnn_quickdraw_accuracy_1.png)
 
 
