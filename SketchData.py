@@ -5,7 +5,6 @@ import pprint
 import datetime
 import time
 from MidpointNormalize import *
-from sklearn.preprocessing import StandardScaler
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -28,11 +27,9 @@ class SketchData:
         # Initiate SIFT detector
         self.sift = cv2.xfeatures2d.SIFT_create()
 
-        self.scaler = StandardScaler()
-
     def load_images(self, train_path):
         # read categories by folders
-        categories = glob.glob(train_path)
+        categories = sorted(glob.glob(train_path))
         categories_and_images = []
         num_train_images = 0
 
@@ -46,7 +43,7 @@ class SketchData:
         return categories_and_images, num_train_images
 
     def load_images_google(self, train_path):
-        categories = glob.glob(train_path)
+        categories = sorted(glob.glob(train_path))
         categories_and_images = []
         num_train_images = 0
 
@@ -96,10 +93,7 @@ class SketchData:
         if sift:
             deslen = self.descriptor_length
         else:
-            if google:
-                deslen = 28*28
-            else:
-                deslen = 150*150
+            deslen = 28 * 28
 
         # create y_train vector containing the labels as integers
         y_train = np.zeros(num_train_images, dtype=int)
@@ -125,8 +119,7 @@ class SketchData:
                 # each descriptor (set of features) need to be flattened in one vector
                 x_train[index_img] = des.flatten()
                 y_train[index_img] = index_cat
-
                 index_img = index_img + 1
             index_cat = index_cat + 1
-        # x_train = self.scaler.fit_transform(x_train)
+
         return x_train, y_train

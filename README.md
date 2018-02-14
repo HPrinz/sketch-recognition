@@ -149,15 +149,15 @@ In every case, the whole set of 2800 sketches with 28x28 pixel vectors were pass
 
 1) slightly fitted Sketch-a-Net-network: test score: 3.45 - test accuracy: 0.10
 
-![](md-images/cnn_tu_loss_3.png) ![](md-images/cnn_tu_3_accuracy.png)
+![](md-images/cnn_tu_1_loss.png) ![](md-images/cnn_tu_1_accuracy.png)
 
-2) adapted Sketch-a-Net-network : 
+2) adapted Sketch-a-Net-network : test score: 3.42 - test accuracy: 0.07
 
-![](md-images/cnn_tu_loss_2.png) ![](md-images/cnn_tu_2_accuracy.png)
+![](md-images/cnn_tu_2_loss.png) ![](md-images/cnn_tu_2_accuracy.png)
 
-3) Fashion-network: test loss: 7.37, test accurracy: 0.03
+3) Fashion-network: test score: 1.86 - test accuracy: 0.51
 
-![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_1_accuracy.png)
+![](md-images/cnn_tu_3_loss.png) ![](md-images/cnn_tu_3_accuracy.png)
 
 
 ### Google QuickDraw
@@ -190,7 +190,7 @@ In every case, the whole set of 4046 sketches with 28x28 pixel vectors were pass
 
 ## Credits and Thanks
 
-The implementation of the SVM is based on the exercise code providede by [Prof. Dr.-Ing. Kristian Hildebrand](http://hildebrand.beuth-hochschule.de/#/)
+The implementation of the SVM and CNN is based on the exercise code provided by [Prof. Dr.-Ing. Kristian Hildebrand](http://hildebrand.beuth-hochschule.de/#/)
 
 The SVM approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
 

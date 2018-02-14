@@ -3,6 +3,7 @@ import pickle
 import pprint
 import time
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 from keras.utils import np_utils
 
@@ -18,8 +19,8 @@ timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%y-%m-%d_%H:%
 
 sketchdata = SketchData()
 
-quickdraw = True
-modeltype = FashionModel
+quickdraw = False
+modeltype = SketchANetModel
 
 # image size
 img_rows, img_cols = 28, 28
@@ -29,9 +30,13 @@ if quickdraw:
     X_test, y_test = sketchdata.get_training_data(True, "./quickdraw-test/*.npy", False)
     nb_classes = 15
 else:
-    X_train, y_train = sketchdata.get_training_data(False, "./tu-train-small/**", False)
-    X_test, y_test = sketchdata.get_training_data(False, "./tu-test-small/**", False)
-    nb_classes = 41
+    X_train, y_train = sketchdata.get_training_data(False, "./tu-train-small/**/", False)
+    X_test, y_test = sketchdata.get_training_data(False, "./tu-test-small/**/", False)
+    nb_classes = 40
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
