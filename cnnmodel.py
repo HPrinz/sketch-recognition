@@ -3,8 +3,8 @@ from keras.layers import Dropout, Convolution2D, MaxPooling2D, Flatten, Dense, A
 
 
 class CNNModel:
-    img_rows = 150
-    img_cols = 150
+    img_rows = 28
+    img_cols = 28
 
     @staticmethod
     def load_inputshape():
@@ -21,13 +21,13 @@ class CNNModel:
         input_shape = CNNModel.load_inputshape()
 
         model = Sequential()
-        model.add(Convolution2D(input_shape=input_shape, data_format='channels_last', filters=30, kernel_size=(10, 10),
+        model.add(Convolution2D(input_shape=input_shape, data_format='channels_last', filters=32, kernel_size=(3, 3),
                                 padding="same", activation="relu"))
-        model.add(Convolution2D(kernel_size=(3, 3), filters=30, activation="relu"))
+        model.add(Convolution2D(kernel_size=(3, 3), filters=32, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(rate=0.25))
         model.add(Convolution2D(filters=64, kernel_size=(3, 3), padding="same", activation="relu"))
-        model.add(Convolution2D(kernel_size=(3, 3), filters=50, activation="relu"))
+        model.add(Convolution2D(kernel_size=(3, 3), filters=64, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(rate=0.25))
         model.add(Flatten())

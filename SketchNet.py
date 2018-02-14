@@ -14,8 +14,8 @@ timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%y-%m-%d_%H:%
 
 sketchdata = SketchData()
 
-X_train, y_train = sketchdata.get_training_data(False, "./tu-train-small/**", False)
-X_test, y_test = sketchdata.get_training_data(False, "./tu-test-small/**", False)
+X_train, y_train = sketchdata.get_training_data(True, "./quickdraw-train/*.npy", False)
+X_test, y_test = sketchdata.get_training_data(True, "./quickdraw-test/*.npy", False)
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
@@ -25,9 +25,9 @@ print("Training matrix shape", X_train.shape)
 print("Testing matrix shape", X_test.shape)
 
 # image size
-img_rows, img_cols = 150, 150
+img_rows, img_cols = 28, 28
 
-nb_classes = 16
+nb_classes = 15
 
 # uncomment for debugging
 # show 9 grayscale images as examples of the data set

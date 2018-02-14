@@ -96,7 +96,10 @@ class SketchData:
         if sift:
             deslen = self.descriptor_length
         else:
-            deslen = 150*150
+            if google:
+                deslen = 28*28
+            else:
+                deslen = 150*150
 
         # create y_train vector containing the labels as integers
         y_train = np.zeros(num_train_images, dtype=int)
