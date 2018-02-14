@@ -6,11 +6,8 @@ A SVM based machine learning program for human sketch recognition based on [How 
 
 ## TODOs
 
-- [x] rename img to train
 - [ ] test img to train
 - [ ] find best model
-- [x] try CNN
-- [ ] implement paper CNN
 - [ ] CNN Quickdraw
 - [ ] CNN Documentation
 
@@ -24,6 +21,11 @@ A SVM based machine learning program for human sketch recognition based on [How 
 conda env create -f anaconda/environment.yml
 source activate sketch-recoginition
 ```
+
+## Using Pre-Trained Models
+
+Trained models are saved in the `models/` folder for later use.
+To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.sav"` (change model file accordingly)
 
 ## Train SVM
 
@@ -58,11 +60,12 @@ In order to **change or extend the categories**, follow these steps:
 - run `python reduce.py` in `/quickdraw-train` to extract and export the first 300 sketches (290 train and 10 test images). The original files in `/quickdraw-train` can be deleted afterwards
 - train the SVM (see above)
 
-## Train CNN
+## CNN (Convolution Neural Network) Architectures
 
-### CNN (Convolution Neural Network) Architecture
+### Architecture 1 - Sketch-A-Net CNN
 
 The Architecture is implemented as described in [Sketch-a-Net that Beats Humans (Yu et al. 2015)](https://arxiv.org/pdf/1501.07873.pdf)
+The Input size is set to 225x255 pixels
 
 |   | Input       | Filter Size | Filter Num | Stride | Padding |  Output |
 |---|-------------|:-----------:|:----------:|:------:|:-------:|:-------:|
@@ -76,38 +79,60 @@ The Architecture is implemented as described in [Sketch-a-Net that Beats Humans 
 | 5 | Conv(ReLU)  |     3x3     |     256    |    1   |    1    |  15x15  |
 |   | MaxPool     |     3x3     |            |    2   |    0    |   7x7   |
 | 6 | Conv(ReLU)  |     7x7     |     512    |    1   |    0    |   1x1   |
-|   | Dropout     |             |            |        |         |   1x1   |
+|   | Dropout 0.5 |             |            |        |         |   1x1   |
 | 7 | Conv(ReLU)  |     1x1     |     512    |    1   |    0    |   1x1   |
-|   | Dropout     |             |            |        |         |   1x1   |
+|   | Dropout 0.5 |             |            |        |         |   1x1   |
 | 8 | Conv (ReLU) |     1x1     |     250    |    1   |    0    |   1x1   |
 
 
-### TU-Berlin Sketch Dataset
+### Archtecture 2 - Adapted Sketch-a-Net CNN
 
-In a first attempt, a reduced number of 1050 sketches (15 categories) with 150x150 pixel vectors were passed to the Fashion-network with a poor outcome (test loss: 7.3705, test accurracy: 0.0333):
-Hyperparams: Epochs: 5, Batch Size: 128
+To adapt for lower sketch size, the Network has been adapted (lower filter sizes, lower number of filters)
 
-![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_accuracy_1.png)
+|   | Input       | Filter Size | Filter Num | Stride | Padding |  Output |
+|---|-------------|:-----------:|:----------:|:------:|:-------:|:-------:|
+| 0 | Conv        |             |            |        |         |  28x28  |
+| 1 | Conv(ReLU)  |     2x2     |     32     |    3   |    0    |  28x28  |
+|   | MaxPool     |     3x3     |            |    2   |    0    |  14x14  |
+| 2 | Conv(ReLU)  |     3x3     |     64     |    1   |    0    |  14x14  |
+|   | MaxPool     |     3x3     |            |    2   |    0    |   7x7   |
+| 3 | Conv(ReLU)  |     3x3     |     128    |    1   |    1    |   5x5   |
+| 4 | Conv(ReLU)  |     3x3     |     128    |    1   |    1    |   3x3   |
+| 5 | Conv(ReLU)  |     3x3     |     128    |    1   |    1    |   1x1   |
+|   | MaxPool     |     3x3     |            |    2   |    0    |   1x1   |
+| 6 | Conv(ReLU)  |     3x3     |     256    |    1   |    0    |   1x1   |
+|   | Dropout 0.5 |             |            |        |         |   1x1   |
+| 7 | Conv(ReLU)  |     1x1     |     256    |    1   |    0    |   1x1   |
+|   | Dropout 0.5 |             |            |        |         |   1x1   |
+| 8 | Conv (ReLU) |     1x1     |     256    |    1   |    0    |   1x1   |
+| 9 | Flatten     |             |            |    1   |    0    |   1x1   |
+| 10| Dense       |             |            |        |         |   15    |
 
+### Archtecture 3 - Fashion CNN
 
-### Google QuickDraw Dataset
+|   | Input          | Filter Size | Filter Num | Stride | Padding |  
+|---|----------------|:-----------:|:----------:|:------:|:-------:|
+| 0 | Conv           |             |            |        |         |
+| 1 | Conv(ReLU)     |     3x3     |     32     |    1   |    0    |
+| 2 | Conv(ReLU)     |     3x3     |     32     |    1   |    1    |
+|   | MaxPool        |     2x2     |            |    1   |    1    |
+|   | Dropout 0.25   |             |            |        |         |
+| 3 | Conv(ReLU)     |     3x3     |     64     |    1   |    0    |
+| 4 | Conv(ReLU)     |     3x3     |     64     |    1   |    1    |
+|   | MaxPool        |     2x2     |            |    1   |    1    |
+|   | Dropout 0.25   |             |            |        |         |
+| 5 | Flatten        |             |            |    1   |    0    |
+| 6 | Dense(softmax) |             |            |        |         |
 
-In a first attempt, the whole set of 4046 sketches with 150x150 pixel vectors were passed to the Fashion-network with a acceptable outcome (test loss: 0.9681 - test accurracy: 0.7214):
-Hyperparams: Epochs: 5, Batch Size: 128
+## Train CNN
 
-![](md-images/cnn_quickdraw_loss_1.png) ![](md-images/cnn_quickdraw_accuracy_1.png)
-
-
-
-
-## Using Pre-Trained Models
-
-Trained models are saved in the `models/` folder for later use.
-To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.sav"` (change model file accordingly)
+# TODO
 
 ## Results
 
 ### TU-Berlin Sketch Dataset
+
+#### SVM
 
 | Nr.   | Type | keypoints       | C                |    gamma            | Kernel  | score | best  |
 |-------|------|-----------------|:----------------:|:-------------------:|:-------:|:-----:|:-----:|
@@ -118,8 +143,26 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 **Best Result : #3**
 ![Best Result SVM](md-images/svm_tu-3.png)
 
+#### CNN
 
-## Google QuickDraw
+In every case, the whole set of 2800 sketches with 28x28 pixel vectors were passed to the network. Hyperparams where chosen as Epochs: 5, Batch Size: 128
+
+1) slightly fitted Sketch-a-Net-network: test score: 3.45 - test accuracy: 0.10
+
+![](md-images/cnn_tu_loss_3.png) ![](md-images/cnn_tu_3_accuracy.png)
+
+2) adapted Sketch-a-Net-network : 
+
+![](md-images/cnn_tu_loss_2.png) ![](md-images/cnn_tu_2_accuracy.png)
+
+3) Fashion-network: test loss: 7.37, test accurracy: 0.03
+
+![](md-images/cnn_tu_loss_1.png) ![](md-images/cnn_tu_1_accuracy.png)
+
+
+### Google QuickDraw
+
+#### SVM
 
 | Nr.   | Type | keypoints       | C                |    gamma            | Kernel  | score | best  |
 |-------|------|-----------------|:----------------:|:-------------------:|:-------:|:-----:|:-----:|
@@ -127,6 +170,23 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 
 **Best Result : #1**
 ![Best Result SVM](md-images/svm_quickdraw-1.png)
+
+### CNN
+
+In every case, the whole set of 4046 sketches with 28x28 pixel vectors were passed to the network. Hyperparams where chosen as Epochs: 5, Batch Size: 128
+
+1) slightly fitted Sketch-a-Net-network: test score: 1.98 - test accuracy: 0.31
+
+![](md-images/cnn_quickdraw_1_loss.png) ![](md-images/cnn_quickdraw_1_accuracy.png)
+
+2) adapted Sketch-a-Net-network : test score: 1.67 - test accuracy: 0.47
+
+![](md-images/cnn_quickdraw_2_loss.png) ![](md-images/cnn_quickdraw_2_accuracy.png)
+
+3) Fashion-network: test score: 0.76 - test accuracy: 0.78
+
+![](md-images/cnn_quickdraw_3_loss.png) ![](md-images/cnn_quickdraw_3_accuracy.png)
+
 
 ## Credits and Thanks
 

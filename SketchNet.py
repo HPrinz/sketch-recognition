@@ -2,37 +2,41 @@ import datetime
 import pickle
 import pprint
 import time
+import numpy as np
 
 from keras.utils import np_utils
 
 import plot_utils
 from SketchData import SketchData
-from cnnmodel import CNNModel
+from cnnmodels.SketchANetModel import SketchANetModel
+from cnnmodels.SketchANetModelAdapted import SketchANetModelAdapted
+from cnnmodels.FashionModel import FashionModel
 
+np.set_printoptions(threshold=np.nan)
 pp = pprint.PrettyPrinter(indent=4)
 timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%y-%m-%d_%H:%M:%S')
 
 sketchdata = SketchData()
 
 quickdraw = True
+modeltype = FashionModel
+
+# image size
+img_rows, img_cols = 28, 28
 
 if quickdraw:
     X_train, y_train = sketchdata.get_training_data(True, "./quickdraw-train/*.npy", False)
-    X_test, y_test = sketchdata.get_training_data(True, "./quickdraw-train/*.npy", False)
-    # image size
-    img_rows, img_cols = 28, 28
+    X_test, y_test = sketchdata.get_training_data(True, "./quickdraw-test/*.npy", False)
     nb_classes = 15
 else:
     X_train, y_train = sketchdata.get_training_data(False, "./tu-train-small/**", False)
     X_test, y_test = sketchdata.get_training_data(False, "./tu-test-small/**", False)
-    # image size
-    img_rows, img_cols = 150, 150
-    nb_classes = 16
+    nb_classes = 41
 
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')
-X_train /= 255
-X_test /= 255
+# X_train /= 255
+# X_test /= 255
 print("Training matrix shape", X_train.shape)
 print("Testing matrix shape", X_test.shape)
 
@@ -57,15 +61,16 @@ Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
 
 # we need to reshape the input data to fit keras.io input matrix format
-X_train, X_test = CNNModel.reshape_input_data(X_train, X_test, img_rows, img_cols)
+X_train, X_test = modeltype.reshape_input_data(X_train, X_test, img_rows, img_cols)
 
 # hyperparameter
 nb_epoch = 5
 batch_size = 128
 
-model = CNNModel.load_model(nb_classes, img_rows, img_cols)
+model = modeltype.load_model(nb_classes, img_rows, img_cols)
 
-history = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch, verbose=1, validation_data=(X_test, Y_test))
+history = model.fit(X_train, Y_train, batch_size=batch_size, epochs=nb_epoch, verbose=1,
+                    validation_data=(X_test, Y_test))
 
 score = model.evaluate(X_test, Y_test, verbose=0)
 

@@ -13,7 +13,7 @@ def plot_model_history(history, timestamp):
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig("results-cnn/" + timestamp + "_model_accuracy.pdf")
+    plt.savefig("results-cnn/" + timestamp + "_model_accuracy.png")
     #plt.show()
     # summarize history for loss
     plt.figure()
@@ -23,7 +23,7 @@ def plot_model_history(history, timestamp):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig("results-cnn/" + timestamp + "_model_loss.pdf")
+    plt.savefig("results-cnn/" + timestamp + "_model_loss.png")
     plt.close()
     #plt.show()
 

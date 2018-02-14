@@ -7,12 +7,12 @@ done
 
 for category in */ ; do
     echo "extracting for category $category"
-    mkdir ../test/${category}
+    mkdir "../tu-test/${category}"
 
     i=0
     for x in ${category}/*; do
       if [ "$i" = 10 ]; then break; fi
-      mv -- "${x}" ../test/${category}
+      mv -- "${x}" "../tu-test/${category}"
       i=$((i+1))
     done
 
