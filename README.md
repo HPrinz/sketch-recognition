@@ -147,7 +147,7 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 
 In every case, the whole set of 2800 sketches with 28x28 pixel vectors were passed to the network. Hyperparams where chosen as Epochs: 5, Batch Size: 128
 
-1) slightly fitted Sketch-a-Net-network: test score: 3.45 - test accuracy: 0.10
+1) slightly fitted Sketch-a-Net-network: test score: 3.60 - test accuracy: 0.04
 
 ![](md-images/cnn_tu_1_loss.png) ![](md-images/cnn_tu_1_accuracy.png)
 
