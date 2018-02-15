@@ -36,6 +36,7 @@ To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.s
 
 The number of categories is currently set to 40 (see folder names in `/tu-train`) in order to reduce training time (about 15 minutes).
 Each category consists of 70 training sketches (located in `/tu-train`) and 10 testing sketches (located in `/tu-test`).
+
 ```bash
 python train_sketchmodel.py
 ```
@@ -113,6 +114,8 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 
 ### Archtecture 3 - Fashion CNN
 
+This network was proposed in class to classify clothes and it was found to be useful for sketches as well, although further alignments are needed.
+
 |   | Input          | Filter Size | Filter Num | Stride | Padding |  
 |---|----------------|:-----------:|:----------:|:------:|:-------:|
 | 0 | Conv           |             |            |        |         |
@@ -128,6 +131,8 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 | 6 | Dense(softmax) |             |            |        |         |
 
 ## Train CNN
+
+The model type in defined in the python files. Uncomment and comment the respective lines to use another model.
 
 Train with TU Dataset
 
@@ -180,8 +185,7 @@ In every case, the whole set of 2800 sketches with 28x28 pixel vectors were pass
 |-------|------|--------------|:----------------:|:-------------------:|:----------:|:-----:|:-------------------:|
 | 1     | SVM   | 28x28x14    | 1, 10, 100       | .001, .01           | rbf        |  0.63 | gamma: 0.001, C: 10 |
 | **2** | SVM   | 28x28x**7** | 1, 10, 100, 1000 | .001, .01, .1       | rbf        |  0.75 | gamma: 0.001, C: 10 |
-| 3     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **rbf**    |  0.63 | gamma: 0.001, C: 10 |
-| 4     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **linear** |  0.63 | gamma: 0.001, C: 10 |
+| 3     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **linear** |  0.63 | gamma: 0.001, C: 10 |
 
 **Best Result : #2**
 
