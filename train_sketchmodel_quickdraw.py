@@ -3,13 +3,13 @@ import time
 
 start_time = time.time()
 
-svm = SketchSvm()
+svm = SketchSvm(28, 7)
 
 quickdraw_path = './quickdraw-train/*.npy'
-c_range = [1, 10, 100, 1000]
-gamma_range = [.001, .01, .1]
+c_range = [1, 10, 100]
+gamma_range = [.0001, .001]
 
-model = svm.train_model_google(quickdraw_path, c_range, gamma_range, kernel="linear")
+model = svm.train(True, quickdraw_path, c_range, gamma_range, kernel="rbf")
 print("The best parameters are %s with a score of %0.2f" % (model.best_params_, model.best_score_))
 
 quickdraw_path_test = './quickdraw-test/*.npy'

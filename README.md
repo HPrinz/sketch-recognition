@@ -147,16 +147,13 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 
 In every case, the whole set of 2800 sketches with 28x28 pixel vectors were passed to the network. Hyperparams where chosen as Epochs: 5, Batch Size: 128
 
-1) slightly fitted Sketch-a-Net-network: test score: 3.60 - test accuracy: 0.04
+| Nr.   | Network              | Test Score | Test Accuracy | 
+|-------|----------------------|:----------:|:-------------:|
+| 1     | Sketch-a-Net         | 3.608       | 0.04          |
+| 2     | Adapted Sketch-a-Net | 3.42       | 0.07          |
+| **3** | Fashion Net          | **1.86**   | **0.51**      |
 
-![](md-images/cnn_tu_1_loss.png) ![](md-images/cnn_tu_1_accuracy.png)
-
-2) adapted Sketch-a-Net-network : test score: 3.42 - test accuracy: 0.07
-
-![](md-images/cnn_tu_2_loss.png) ![](md-images/cnn_tu_2_accuracy.png)
-
-3) Fashion-network: test score: 1.86 - test accuracy: 0.51
-
+**Best Result : #3**
 ![](md-images/cnn_tu_3_loss.png) ![](md-images/cnn_tu_3_accuracy.png)
 
 
@@ -164,26 +161,27 @@ In every case, the whole set of 2800 sketches with 28x28 pixel vectors were pass
 
 #### SVM
 
-| Nr.   | Type | keypoints       | C                |    gamma            | Kernel  | score | best  |
-|-------|------|-----------------|:----------------:|:-------------------:|:-------:|:-----:|:-----:|
-| 1     | SVM   | 150x150x30     | 1, 10, 100, 1000 | -                   | linear  |  0.70 | gamma: 0.001, C: 10 |
+| Nr.   | Type | keypoints    | C                |    gamma            | Kernel     | score | best                |
+|-------|------|--------------|:----------------:|:-------------------:|:----------:|:-----:|:-------------------:|
+| 1     | SVM   | 28x28x14    | 1, 10, 100       | .001, .01           | rbf        |  0.63 | gamma: 0.001, C: 10 |
+| **2** | SVM   | 28x28x**7** | 1, 10, 100, 1000 | .001, .01, .1       | rbf        |  0.75 | gamma: 0.001, C: 10 |
+| 3     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **rbf**    |  0.63 | gamma: 0.001, C: 10 |
+| 4     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **linear** |  0.63 | gamma: 0.001, C: 10 |
 
-**Best Result : #1**
+**Best Result : #2**
 ![Best Result SVM](md-images/svm_quickdraw-1.png)
 
-### CNN
+#### CNN
 
 In every case, the whole set of 4046 sketches with 28x28 pixel vectors were passed to the network. Hyperparams where chosen as Epochs: 5, Batch Size: 128
 
-1) slightly fitted Sketch-a-Net-network: test score: 1.98 - test accuracy: 0.31
+| Nr.   | Network              | Test Score | Test Accuracy | 
+|-------|----------------------|:----------:|:-------------:|
+| 1     | Sketch-a-Net         | 1.98       | 0.31          |
+| 2     | Adapted Sketch-a-Net | 1.67       | 0.47          |
+| **3** | Fashion Net          | **0.76**   | **0.78**      |
 
-![](md-images/cnn_quickdraw_1_loss.png) ![](md-images/cnn_quickdraw_1_accuracy.png)
-
-2) adapted Sketch-a-Net-network : test score: 1.67 - test accuracy: 0.47
-
-![](md-images/cnn_quickdraw_2_loss.png) ![](md-images/cnn_quickdraw_2_accuracy.png)
-
-3) Fashion-network: test score: 0.76 - test accuracy: 0.78
+**Best Result : #2**
 
 ![](md-images/cnn_quickdraw_3_loss.png) ![](md-images/cnn_quickdraw_3_accuracy.png)
 

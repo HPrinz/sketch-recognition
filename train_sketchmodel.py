@@ -9,7 +9,7 @@ svm = SketchSvm()
 
 c_range = [10, 100, 1000]
 gamma_range = [0.00001, 0.0001, 0.001]
-model = svm.train_model("./tu-train/**", c_range, gamma_range, kernel="rbf")
+model = svm.train(False, "./tu-train/**/", c_range, gamma_range, kernel="linear")
 
 print("The best parameters are %s with a score of %0.2f" % (model.best_params_, model.best_score_))
 

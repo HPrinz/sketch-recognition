@@ -12,10 +12,9 @@ pp = pprint.PrettyPrinter(indent=4)
 class SketchData:
     """Support Vector Machine for Sketch recognition"""
 
-    def __init__(self):
+    def __init__(self, size, step):
 
-        self.keypoints = self.create_keypoints(150, 150, 30)
-        print("created " + str(len(self.keypoints)) + " keypoints")
+        self.keypoints = self.create_keypoints(size, size, step)
 
         # histogram orientations: 4 neighbors horizontal * 4 neighbors vertical * 8 directions
         num_entry_per_keypoint = 4 * 4 * 8
@@ -24,17 +23,22 @@ class SketchData:
 
         self.timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%y-%m-%d_%H:%M:%S')
 
+        self.categories = []
+
         # Initiate SIFT detector
         self.sift = cv2.xfeatures2d.SIFT_create()
 
+    def get_keypoints(self):
+        return self.keypoints
+
     def load_images(self, train_path):
         # read categories by folders
-        categories = sorted(glob.glob(train_path))
+        self.categories = sorted(glob.glob(train_path))
         categories_and_images = []
         num_train_images = 0
 
         """read all image paths in each category folder"""
-        for cat in categories:
+        for cat in self.categories:
             category_name = os.path.basename(os.path.normpath(cat))
             images_in_cat = glob.glob(cat + '/*.png')
             num_train_images += len(images_in_cat)
@@ -90,6 +94,8 @@ class SketchData:
         else:
             categories_and_images, num_train_images = self.load_images(path)
 
+        print("loaded %d images" % num_train_images)
+
         if sift:
             deslen = self.descriptor_length
         else:
@@ -123,3 +129,6 @@ class SketchData:
             index_cat = index_cat + 1
 
         return x_train, y_train
+
+    def get_name_for_category(self, category):
+        return self.categories[category]
