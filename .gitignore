@@ -109,3 +109,7 @@ results-cnn
 models-quickdraw
 results-quickdraw
 img
+quickdraw-test
+quickdraw-train
+tu-test
+tu-train
