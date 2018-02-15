@@ -6,14 +6,24 @@ A SVM based machine learning program for human sketch recognition based on [How 
 
 ## Installation
 
-- run `/install.sh`
+### Mac/Linux
+
 - install [python 3 :snake:](https://www.python.org/downloads/)
 - install [anaconda :snake:](https://conda.io/docs/user-guide/install/index.html)
-- cd into project folder in terminal
+
 ```bash
 conda env create -f anaconda/environment.yml
 source activate sketch-recoginition
 ```
+
+- run `sudo apt-get install unzip`
+- `cd` into project folder in terminal
+- run `/install.sh`
+
+
+### Windows
+
+:alien:
 
 ## Using Pre-Trained Models
 
