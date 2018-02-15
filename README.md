@@ -4,13 +4,6 @@ A SVM based machine learning program for human sketch recognition based on [How 
 
 <span> <img src="https://media.giphy.com/media/xThtaiAAht03JkRjFe/giphy.gif" width="160"> <img src="https://media.giphy.com/media/26DN1nteDhIcwwGOY/giphy.gif" width="160">   <img src="https://media.giphy.com/media/l1KcQRJkG8JGphV0k/giphy.gif" width="160"> <img src="https://media.giphy.com/media/xThta1euv6mW2uBFmg/giphy.gif" width="160"> <img src="https://media.giphy.com/media/xThtaoqt6cwyAVnUdy/giphy.gif" width="160">   </span>
 
-## TODOs
-
-- [ ] test img to train
-- [ ] find best model
-- [ ] CNN Quickdraw
-- [ ] CNN Documentation
-
 ## Installation
 
 - run `/install.sh`
@@ -126,7 +119,17 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 
 ## Train CNN
 
-# TODO
+Train with TU Dataset
+
+```bash
+python train_cnn_tu.py
+```
+
+Train with Google Quickdraw Dataset
+
+```bash
+python train_cnn_quickdraw.py
+```
 
 ## Results
 
@@ -141,6 +144,7 @@ To adapt for lower sketch size, the Network has been adapted (lower filter sizes
 | **3** | SVM   | 150x150x30     | 10, 100, 1000    | .00001, .0001, .001 | **rbf** | 0.69  | gamma : 0.0001, C: 100   |
 
 **Best Result : #3**
+
 ![Best Result SVM](md-images/svm_tu-3.png)
 
 #### CNN
@@ -154,6 +158,7 @@ In every case, the whole set of 2800 sketches with 28x28 pixel vectors were pass
 | **3** | Fashion Net          | **1.86**   | **0.51**      |
 
 **Best Result : #3**
+
 ![](md-images/cnn_tu_3_loss.png) ![](md-images/cnn_tu_3_accuracy.png)
 
 
@@ -169,6 +174,7 @@ In every case, the whole set of 2800 sketches with 28x28 pixel vectors were pass
 | 4     | SVM   | 28x28x7     | 1, 10, 100       | .0001, .001         | **linear** |  0.63 | gamma: 0.001, C: 10 |
 
 **Best Result : #2**
+
 ![Best Result SVM](md-images/svm_quickdraw-1.png)
 
 #### CNN
