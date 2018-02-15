@@ -38,6 +38,7 @@ python train_svm_tu.py
 
 In order to **change or extend the categories**, follow these steps: 
 
+- install [Imagemagick](www.imagemagick.org/script/download.php)
 - run `load_all_tu_sketches.sh` to download all sketches collected by [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/) into folder `/img-all`
 - delete folders in `/tu-train`
 - copy all categories you want to train into `/tu-train`
