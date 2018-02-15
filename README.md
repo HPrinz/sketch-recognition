@@ -25,11 +25,6 @@ source activate sketch-recoginition
 
 :alien:
 
-## Using Pre-Trained Models
-
-Trained models are saved in the `models/` folder for later use.
-To reuse a pre-trained model, use `use_sketchmodel.py --modelname "models/file.sav"` (change model file accordingly)
-
 ## Train SVM
 
 ### TU-Berlin Sketch Dataset
@@ -38,7 +33,7 @@ The number of categories is currently set to 40 (see folder names in `/tu-train`
 Each category consists of 70 training sketches (located in `/tu-train`) and 10 testing sketches (located in `/tu-test`).
 
 ```bash
-python train_sketchmodel.py
+python train_svm_tu.py
 ```
 
 In order to **change or extend the categories**, follow these steps: 
@@ -54,7 +49,7 @@ In order to **change or extend the categories**, follow these steps:
 Google provides a massive amount of sketches through the QuickDraw Dataset which can be used to train the SVM as well. In this repository, 14 categories are used to train the SVM. 290 sketches of each category are are used to train and 10 are used to test the SVM. This decision was made due to the lower quality and lower resolution (28x28) of the dataset.
 
 ```bash
-python train_sketchmodel_quickdraw.py
+python train_svm_quickdraw.py
 ```
 
 In order to **change or extend the categories**, follow these steps: 
@@ -63,6 +58,12 @@ In order to **change or extend the categories**, follow these steps:
 - rename files to `<category>.npy`
 - run `python reduce.py` in `/quickdraw-ds` to extract and export the first 300 sketches (290 train and 10 test images). The original files in `/quickdraw-ds` can be deleted afterwards
 - train the SVM (see above)
+
+### Using Pre-Trained SVM Models
+
+Trained models are saved in the `models/` folder for later use.
+To reuse a pre-trained model, run `python use_svm_model.py -m "models/file.sav"` (change model file accordingly)
+If the model was trained with Google Quickdraw data, add `-q`
 
 ## CNN (Convolution Neural Network) Architectures
 

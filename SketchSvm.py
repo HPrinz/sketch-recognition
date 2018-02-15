@@ -37,6 +37,10 @@ class SketchSvm:
 
         self.scaler = StandardScaler()
 
+    def fit_scaler(self, quickdraw, trainpath):
+        x_train, y_train = self.sketchdata.get_training_data(quickdraw, trainpath, sift=True)
+        self.scaler.fit(x_train)
+
     def load_model(self, model_file):
         if not model_file:
             print("model name has to be provided")
