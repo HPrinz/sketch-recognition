@@ -58,9 +58,9 @@ python train_sketchmodel_quickdraw.py
 
 In order to **change or extend the categories**, follow these steps: 
 
-- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/quickdraw-train`
+- download a number of categories from https://console.cloud.google.com/storage/browser/quickdraw_dataset/full/numpy_bitmap into `/quickdraw-ds`
 - rename files to `<category>.npy`
-- run `python reduce.py` in `/quickdraw-train` to extract and export the first 300 sketches (290 train and 10 test images). The original files in `/quickdraw-train` can be deleted afterwards
+- run `python reduce.py` in `/quickdraw-ds` to extract and export the first 300 sketches (290 train and 10 test images). The original files in `/quickdraw-ds` can be deleted afterwards
 - train the SVM (see above)
 
 ## CNN (Convolution Neural Network) Architectures
@@ -209,3 +209,9 @@ The implementation of the SVM and CNN is based on the exercise code provided by 
 The SVM approach is described in [How Do Humans Sketch Objects? (Eitz et al. 2012)](http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/)
 
 The CNN approach is described in [Sketch-a-Net that Beats Humans (Yu et al. 2015)](https://arxiv.org/pdf/1501.07873.pdf)
+
+## TODO
+
+- [ ] overlapping keypoints
+- [ ] adapt Neural Networks to achieve better test resultss
+- [ ] tidy up scripts and folders
